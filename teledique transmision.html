@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teledique - Configuración vMix</title>
+    <style>
+        :root {
+            --primary: #DC2626;
+            --primary-dark: #B91C1C;
+            --secondary: #2563EB;
+            --accent: #F59E0B;
+            --dark: #1E1B2E;
+            --darker: #151321;
+            --light: #F8FAFC;
+            --gray: #64748B;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(220, 38, 38, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--accent);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .channel-info {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .channel-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .channel-tagline {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid transparent;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: rgba(30, 27, 46, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            height: fit-content;
+            border: 2px solid var(--primary);
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-section h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .stream-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: rgba(220, 38, 38, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(30, 27, 46, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 2px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        /* vMix Configuration */
+        .vmix-config {
+            background: rgba(37, 99, 235, 0.1);
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .config-section {
+            margin-bottom: 2rem;
+        }
+
+        .config-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .config-title {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .connection-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .connection-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detail-card {
+            background: rgba(21, 19, 33, 0.8);
+            border: 1px solid var(--secondary);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .detail-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--light);
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #1D4ED8;
+        }
+
+        /* Steps */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: var(--dark);
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .step-description {
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #0DA271;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #DC2626;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+        }
+
+        .btn-warning:hover {
+            background: #D97706;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #1D4ED8;
+        }
+
+        /* Status Indicators */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .status-live {
+            background: rgba(220, 38, 38, 0.2);
+            color: white;
+            border: 1px solid var(--primary);
+        }
+
+        .status-ready {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .status-offline {
+            background: rgba(100, 116, 139, 0.2);
+            color: var(--gray);
+        }
+
+        .status-connecting {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        /* Video Player */
+        .video-container {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 3px solid var(--primary);
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .stream-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(220, 38, 38, 0.9));
+            padding: 2rem;
+            color: white;
+        }
+
+        .stream-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .stream-info {
+            display: flex;
+            gap: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(21, 19, 33, 0.95);
+            border-top: 3px solid var(--primary);
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--primary);
+            color: var(--gray);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Local Business Section */
+        .local-business {
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--accent);
+        }
+
+        .business-title {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Connection Status */
+        .connection-status {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .status-connected {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .status-disconnected {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .status-connecting {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">📺</span>
+                    <span>TELEDIQUE</span>
+                </div>
+                <div class="channel-info">
+                    <div class="channel-name">CANAL LOCAL</div>
+                    <div class="channel-tagline">Configuración vMix - Transmisión Profesional</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">vMix</a></li>
+                        <li><a href="#">OBS</a></li>
+                        <li><a href="#">Streamlabs</a></li>
+                        <li><a href="#">Móvil</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>🔴 Estado de Transmisión</h3>
+                    <div class="status status-ready">
+                        <div class="status-dot" style="width: 8px; height: 8px; background: var(--success); border-radius: 50%;"></div>
+                        CONFIGURADO PARA VMIX
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>📊 Información del Stream</h3>
+                    <div class="stream-stats">
+                        <div class="stat-item">
+                            <span>Plataforma</span>
+                            <span>vMix</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Protocolo</span>
+                            <span>RTMP</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Servidor</span>
+                            <span>Teledique</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Estado</span>
+                            <span id="serverStatus">Listo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>⚡ Acciones Rápidas</h3>
+                    <div class="quick-actions">
+                        <button class="btn btn-secondary" onclick="copyToClipboard('streamUrl')">📋 Copiar URL</button>
+                        <button class="btn btn-secondary" onclick="copyToClipboard('streamKey')">🔑 Copiar Stream Key</button>
+                        <button class="btn btn-outline" onclick="testConnection()">🔍 Probar Conexión</button>
+                        <button class="btn btn-success" onclick="startStream()" id="startBtn">▶️ Iniciar Stream</button>
+                    </div>
+                </div>
+
+                <!-- vMix Tips -->
+                <div class="local-business">
+                    <div class="business-title">💡 Tips vMix</div>
+                    <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+                        <li>Usa GPU encoding</li>
+                        <li>Bitrate: 4000-8000 kbps</li>
+                        <li>Keyframe: 2 segundos</li>
+                        <li>Profile: High</li>
+                    </ul>
+                </div>
+
+                <!-- Soporte -->
+                <div class="sidebar-section">
+                    <h3>🆘 Soporte vMix</h3>
+                    <div class="stream-stats">
+                        <div class="stat-item">
+                            <span>Email</span>
+                            <span>vmix@teledique.local</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Teléfono</span>
+                            <span>(555) 123-VMIX</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Horario</span>
+                            <span>24/7</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="dashboard">
+                <!-- vMix Configuration -->
+                <section class="card">
+                    <h2>🎬 Configuración vMix - Teledique Canal Local</h2>
+                    
+                    <div class="vmix-config">
+                        <div class="config-section">
+                            <div class="config-title">📡 Información de Conexión</div>
+                            <div class="connection-details">
+                                <div class="detail-card">
+                                    <div class="detail-label">URL del Servidor RTMP</div>
+                                    <div class="detail-value" id="streamUrl">rtmp://live.teledique.local:1935/live</div>
+                                    <button class="copy-btn" onclick="copyToClipboard('streamUrl')">Copiar</button>
+                                </div>
+                                <div class="detail-card">
+                                    <div class="detail-label">Stream Key</div>
+                                    <div class="detail-value" id="streamKey">tdq_vmix_2024_7x9y2z8</div>
+                                    <button class="copy-btn" onclick="copyToClipboard('streamKey')">Copiar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <div class="config-title">⚙️ Parámetros Recomendados</div>
+                            <div class="connection-details">
+                                <div class="detail-card">
+                                    <div class="detail-label">Video Bitrate</div>
+                                    <div class="detail-value">6000 kbps</div>
+                                </div>
+                                <div class="detail-card">
+                                    <div class="detail-label">Audio Bitrate</div>
+                                    <div class="detail-value">128 kbps</div>
+                                </div>
+                                <div class="detail-card">
+                                    <div class="detail-label">Resolución</div>
+                                    <div class="detail-value">1920x1080 (1080p)</div>
+                                </div>
+                                <div class="detail-card">
+                                    <div class="detail-label">Frame Rate</div>
+                                    <div class="detail-value">30 fps</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guía de Configuración vMix -->
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <div class="step-title">Abrir Configuración de Stream en vMix</div>
+                                <div class="step-description">
+                                    Ve a <strong>Settings → Streaming</strong> o haz clic en el botón "Stream" en la interfaz principal de vMix.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <div class="step-title">Configurar Destino Custom</div>
+                                <div class="step-description">
+                                    Selecciona <strong>Custom</strong> en la lista de destinos. En URL ingresa: <code>rtmp://live.teledique.local:1935/live</code>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <div class="step-title">Ingresar Stream Key</div>
+                                <div class="step-description">
+                                    En el campo Stream Key, pega: <code>tdq_vmix_2024_7x9y2z8</code> (Este es tu identificador único)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <div class="step-title">Ajustar Configuración de Video/Audio</div>
+                                <div class="step-description">
+                                    Configura los parámetros recomendados: 1080p, 30fps, 6000 kbps de video, 128 kbps de audio.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <div class="step-title">Iniciar Transmisión</div>
+                                <div class="step-description">
+                                    Haz clic en "Start Streaming" en vMix. El estado se actualizará automáticamente en esta página.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estado de Conexión -->
+                    <div class="connection-status status-ready" id="connectionStatus">
+                        ✅ CONFIGURACIÓN LISTA - Copia la URL y Stream Key para configurar vMix
+                    </div>
+
+                    <!-- Video Preview -->
+                    <div class="video-container" id="videoContainer" style="display: none;">
+                        <video id="mainVideo" controls autoplay muted>
+                            <source src="#" type="video/mp4">
+                            Tu navegador no soporta el elemento video.
+                        </video>
+                        <div class="stream-overlay">
+                            <div class="stream-title" id="currentProgram">TRANSMISIÓN EN VIVO - Teledique vMix</div>
+                            <div class="stream-info">
+                                <span id="viewerCount">👁️ 0 espectadores</span>
+                                <span id="streamDuration">⏱️ 00:00:00 en vivo</span>
+                                <span>📺 vMix Professional</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controles de Transmisión -->
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; display: none;" id="streamControls">
+                        <button class="btn btn-success" onclick="goLive()">🔴 IR EN VIVO</button>
+                        <button class="btn btn-warning" onclick="pauseStream()">⏸️ Pausa Técnica</button>
+                        <button class="btn btn-danger" onclick="stopStream()">⏹️ Finalizar</button>
+                        <button class="btn btn-outline" onclick="showAdvanced()">⚙️ Avanzado</button>
+                    </div>
+                </section>
+
+                <!-- Información Adicional -->
+                <section class="card">
+                    <h2>📚 Recursos vMix</h2>
+                    <div class="connection-details">
+                        <div class="detail-card">
+                            <div class="detail-label">Documentación Oficial</div>
+                            <div class="detail-value">Guías y manuales vMix</div>
+                            <button class="copy-btn" onclick="window.open('https://www.vmix.com/help24/index.html', '_blank')">Abrir</button>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Plantillas Teledique</div>
+                            <div class="detail-value">Graphics packs para vMix</div>
+                            <button class="copy-btn" onclick="downloadTemplates()">Descargar</button>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Configuraciones Guardadas</div>
+                            <div class="detail-value">Presets para Teledique</div>
+                            <button class="copy-btn" onclick="exportSettings()">Exportar</button>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-label">Soporte Técnico</div>
+                            <div class="detail-value">Ayuda inmediata</div>
+                            <button class="copy-btn" onclick="contactSupport()">Contactar</button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Teledique vMix</h3>
+                    <p>Configuración profesional para transmisiones con vMix. Soporte técnico especializado disponible.</p>
+                    <div class="contact-info" style="margin-top: 1rem;">
+                        <div class="contact-item">📍 Soporte vMix: vmix@teledique.local</div>
+                        <div class="contact-item">📞 Teléfono: (555) 123-VMIX</div>
+                        <div class="contact-item">🕒 Horario: 24/7</div>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Recursos vMix</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="window.open('https://www.vmix.com/help24/index.html', '_blank')">Documentación Oficial</a></li>
+                        <li><a href="#" onclick="window.open('https://www.vmix.com/training/', '_blank')">Video Tutoriales</a></li>
+                        <li><a href="#" onclick="window.open('https://www.vmix.com/community/forums', '_blank')">Foros Comunitarios</a></li>
+                        <li><a href="#" onclick="window.open('https://www.vmix.com/download.aspx', '_blank')">Descargas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Soporte Técnico</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="contactSupport()">Soporte por Email</a></li>
+                        <li><a href="#" onclick="contactSupport()">Soporte por Teléfono</a></li>
+                        <li><a href="#" onclick="contactSupport()">Soporte Remoto</a></li>
+                        <li><a href="#" onclick="contactSupport()">Consulta Rápida</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Teledique Canal Local. Configuración vMix profesional. Stream Key: tdq_vmix_2024_7x9y2z8</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Datos de configuración para vMix
+        const vmixConfig = {
+            streamUrl: 'rtmp://live.teledique.local:1935/live',
+            streamKey: 'tdq_vmix_2024_7x9y2z8',
+            backupUrl: 'rtmp://backup.teledique.local:1935/live',
+            videoSettings: {
+                resolution: '1920x1080',
+                fps: 30,
+                bitrate: 6000,
+                profile: 'high',
+                preset: 'medium'
+            },
+            audioSettings: {
+                bitrate: 128,
+                channels: 2,
+                sampleRate: 48000
+            }
+        };
+
+        let isStreaming = false;
+        let streamStartTime = null;
+        let viewerCount = 0;
+
+        // Función para copiar al portapapeles
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent || element.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('✅ Copiado al portapapeles: ' + text);
+            }).catch(err => {
+                console.error('Error al copiar: ', err);
+                showNotification('❌ Error al copiar');
+            });
+        }
+
+        // Función para probar conexión
+        function testConnection() {
+            const statusElement = document.getElementById('connectionStatus');
+            statusElement.className = 'connection-status status-connecting';
+            statusElement.innerHTML = '🔍 Probando conexión con el servidor...';
+            
+            showNotification('🔍 Probando conexión RTMP...');
+
+            // Simular prueba de conexión
+            setTimeout(() => {
+                statusElement.className = 'connection-status status-connected';
+                statusElement.innerHTML = '✅ Conexión exitosa - Servidor listo para vMix';
+                showNotification('✅ Conexión RTMP verificada correctamente');
+            }, 2000);
+        }
+
+        // Función para iniciar stream
+        function startStream() {
+            if (isStreaming) {
+                showNotification('⚠️ La transmisión ya está activa');
+                return;
+            }
+
+            showNotification('🎬 Iniciando configuración vMix...');
+            
+            // Simular inicio de stream
+            setTimeout(() => {
+                isStreaming = true;
+                streamStartTime = new Date();
+                
+                document.getElementById('videoContainer').style.display = 'block';
+                document.getElementById('streamControls').style.display = 'flex';
+                document.getElementById('startBtn').style.display = 'none';
+                
+                document.querySelector('.status').className = 'status status-live pulse';
+                document.querySelector('.status').innerHTML = '<div style="width: 8px; height: 8px; background: white; border-radius: 50%;"></div> TRANSMITIENDO CON VMIX';
+                
+                document.getElementById('connectionStatus').className = 'connection-status status-connected';
+                document.getElementById('connectionStatus').innerHTML = '🔴 TRANSMISIÓN ACTIVA - vMix conectado correctamente';
+                
+                startViewerSimulation();
+                updateStreamDuration();
+                
+                showNotification('🎉 ¡Transmisión vMix iniciada correctamente!');
+            }, 3000);
+        }
+
+        // Función para ir en vivo
+        function goLive() {
+            showNotification('🔴 ¡ESTAMOS EN VIVO! Transmitiendo a toda la comunidad');
+            document.getElementById('currentProgram').textContent = '🔴 EN VIVO - Teledique Canal Local';
+        }
+
+        // Función para detener stream
+        function stopStream() {
+            if (confirm('¿Estás seguro de que quieres finalizar la transmisión vMix?')) {
+                isStreaming = false;
+                
+                document.getElementById('videoContainer').style.display = 'none';
+                document.getElementById('streamControls').style.display = 'none';
+                document.getElementById('startBtn').style.display = 'inline-flex';
+                
+                document.querySelector('.status').className = 'status status-ready';
+                document.querySelector('.status').innerHTML = '<div style="width: 8px; height: 8px; background: var(--success); border-radius: 50%;"></div> CONFIGURADO PARA VMIX';
+                
+                document.getElementById('connectionStatus').className = 'connection-status status-ready';
+                document.getElementById('connectionStatus').innerHTML = '✅ CONFIGURACIÓN LISTA - vMix desconectado';
+                
+                showNotification('⏹️ Transmisión vMix finalizada');
+            }
+        }
+
+        // Simular espectadores
+        function startViewerSimulation() {
+            setInterval(() => {
+                if (isStreaming) {
+                    viewerCount += Math.floor(Math.random() * 3);
+                    viewerCount = Math.max(50, viewerCount);
+                    document.getElementById('viewerCount').textContent = `👁️ ${viewerCount} espectadores`;
+                }
+            }, 5000);
+        }
+
+        // Actualizar duración del stream
+        function updateStreamDuration() {
+            setInterval(() => {
+                if (isStreaming && streamStartTime) {
+                    const now = new Date();
+                    const diff = Math.floor((now - streamStartTime) / 1000);
+                    const hours = Math.floor(diff / 3600);
+                    const minutes = Math.floor((diff % 3600) / 60);
+                    const seconds = diff % 60;
+                    
+                    document.getElementById('streamDuration').textContent = 
+                        `⏱️ ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} en vivo`;
+                }
+            }, 1000);
+        }
+
+        // Mostrar notificación
+        function showNotification(message) {
+            // Crear notificación temporal
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                z-index: 10000;
+                font-weight: 500;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 3000);
+        }
+
+        // Funciones de recursos
+        function downloadTemplates() {
+            showNotification('📦 Descargando plantillas gráficas para vMix...');
+        }
+
+        function exportSettings() {
+            showNotification('⚙️ Exportando configuración de vMix...');
+        }
+
+        function contactSupport() {
+            showNotification('📞 Contactando al soporte técnico vMix...');
+        }
+
+        function showAdvanced() {
+            showNotification('⚙️ Abriendo configuración avanzada de vMix...');
+        }
+
+        function pauseStream() {
+            showNotification('⏸️ Transmisión pausada - Modo técnico activo');
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            showNotification('Bienvenido a la configuración vMix de Teledique');
+        });
+    </script>
+</body>
+</html>
